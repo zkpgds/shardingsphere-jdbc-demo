@@ -54,6 +54,10 @@
                     <groupId>org.apache.logging.log4j</groupId>
                     <artifactId>log4j-to-slf4j</artifactId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>snakeyaml</artifactId>
+                    <groupId>org.yaml</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -229,6 +233,12 @@
                     <groupId>io.netty</groupId>
                     <artifactId>netty-handler</artifactId>
                 </exclusion>
+
+                <exclusion>
+                    <artifactId>snakeyaml</artifactId>
+                    <groupId>org.yaml</groupId>
+                </exclusion>
+
             </exclusions>
         </dependency>
 
@@ -241,6 +251,11 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.33</version>
         </dependency>
 
     </dependencies>

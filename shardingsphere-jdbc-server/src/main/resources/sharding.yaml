@@ -1,0 +1,72 @@
+dataSources:
+  ds0:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    password: 123456
+    dataSourceClassName: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3317/ds_0?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&useTimezone=true
+    username: root
+  ds1:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    password: 123456
+    dataSourceClassName: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3317/ds_1?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&useTimezone=true
+    username: root
+  ds2:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    password: 123456
+    dataSourceClassName: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3317/ds_2?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&useTimezone=true
+    username: root
+  ds3:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    password: 123456
+    dataSourceClassName: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3317/ds_3?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&useTimezone=true
+    username: root
+rules:
+  - !SHARDING
+    tables:
+      t_ent_order:
+        actualDataNodes: ds$->{0..3}.t_ent_order
+        tableStrategy:
+          none: 'null'
+        keyGenerateStrategy:
+          column: id
+          keyGeneratorName: snowflake
+      t_ent_order_detail:
+        actualDataNodes: ds$->{0..3}.t_ent_order_detail
+        tableStrategy:
+          complex:
+            shardingColumns: id,ent_id
+            shardingAlgorithmName: t_ent_order_class
+        keyGenerateStrategy:
+          column: id
+          keyGeneratorName: snowflake
+      t_ent_order_item:
+        actualDataNodes: ds$->{0..3}.t_ent_order_item_$->{0..7}
+        tableStrategy:
+          complex:
+            shardingColumns: id,ent_id
+            shardingAlgorithmName: t_ent_order_class
+        keyGenerateStrategy:
+          column: id
+          keyGeneratorName: snowflake
+    bindingTables:
+      - t_ent_order,t_ent_order_detail
+    defaultDatabaseStrategy:
+      complex:
+        shardingColumns: id,ent_id
+        shardingAlgorithmName: t_ent_order_class
+    # 分片算法配置
+    shardingAlgorithms:
+      t_ent_order_class:
+        type: CLASS_BASED
+        props:
+          strategy: complex
+          algorithmClassName: com.courage.shardingsphere.jdbc.service.sharding.HashSlotAlgorithm
+    # 分布式序列算法配置
+    keyGenerators:
+      snowflake:
+        type: SNOWFLAKE
+props:
+  sql-show: true
